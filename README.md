@@ -4,6 +4,13 @@ This repository contains a ComfyUI custom node implementing the **Spectrum** sam
 
 > **Disclaimer:** This repository was created with substantial assistance from AI tools.
 
+> **Performance comparison:**
+>
+> | 24‑step Euler (Default) | 24-step Euler (Spectrum) |
+> | :---: | :---: |
+> | ![Default](/images/default.png) | ![Spectrum](/images/spectrum.png) |
+> | **6.5 s** | **3.6 s** |
+>
 ---
 
 ## Key Features
@@ -78,3 +85,4 @@ If you use this node in your research, please cite the original paper:
 }
 
 ```
+
