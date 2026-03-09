@@ -1,6 +1,6 @@
 # ComfyUI Spectrum SDXL Node
 
-This repository contains a ComfyUI custom node implementing the **Spectrum** sampling acceleration technique, tailored specifically for SDXL models. Spectrum is a training-free method that forecasts spectral features using Chebyshev polynomials and ridge regression to skip redundant UNet computations, achieving significant speed-ups with minimal quality loss.
+This repository contains a ComfyUI custom node implementing the **Spectrum** sampling acceleration technique, while initially tailored specifically for SDXL models, its confirmed to works with DiT based model such as Anima. Spectrum is a training-free method that forecasts spectral features using Chebyshev polynomials and ridge regression to skip redundant UNet computations, achieving significant speed-ups with minimal quality loss.
 
 > **Disclaimer:** This repository was created with substantial assistance from AI tools.
 
@@ -95,3 +95,4 @@ If you use this node in your research, please cite the original paper:
 }
 
 ```
+
