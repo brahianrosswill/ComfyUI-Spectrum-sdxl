@@ -4,7 +4,7 @@ This repository contains a ComfyUI custom node implementing the **Spectrum** sam
 
 > **Disclaimer:** This repository was created with substantial assistance from AI tools.
 
-> **Performance comparison:**
+> **Performance comparison** — **Download the images below and drag them into ComfyUI to instantly load optimized workflows!**
 >
 > **SDXL (24-step Euler):**
 >
