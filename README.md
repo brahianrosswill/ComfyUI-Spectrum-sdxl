@@ -15,6 +15,7 @@ This repository contains a ComfyUI custom node implementing the **Spectrum** sam
 
 ## Key Features
 
+* **Architecture Agnostic** – While initially tailored for SDXL, this implementation is designed to be model-agnostic. It successfully accelerates both UNet-based models (like SDXL) and Diffusion Transformer (DiT) architectures (so far tested only on Anima).
 * **Sampling Acceleration** – Reduce inference time (up to ~2× on SDXL) by skipping UNet evaluations on selected timesteps.
 * **Vectorized Batch Processing** – Fully vectorized mathematical operations process conditional and unconditional latents independently. This prevents memory contamination (rainbow artifacts) and sustains ultra-high `it/s` speeds without Python loop bottlenecks.
 * **FP8 Tensor-Core Support** – Compatible to run on NVIDIA Tensor Cores in FP8 mode, providing additional speed gains on compatible hardware. Works seamlessly alongside other optimizations.
@@ -85,4 +86,5 @@ If you use this node in your research, please cite the original paper:
 }
 
 ```
+
 
