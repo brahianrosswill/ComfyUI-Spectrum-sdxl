@@ -58,13 +58,13 @@ git clone https://github.com/ruwwww/comfyui-spectrum-sdxl
 
 ## Recommended Settings
 
-For the best balance of **extreme speed** (< 3 seconds) and **high-definition sharpness** (no blur/artifacts), use the following configuration (assuming a standard 25-step generation):
+For the best balance of **extreme speed** and **high-definition sharpness** (no blur/artifacts), use the following configuration (assuming a standard 25-step generation):
 
-- **`w`**: `0.40`
+- **`w`**: `0.30`
 - **`m`**: `3`
-- **`lam`**: `1.0`
+- **`lam`**: `0.1`
 - **`window_size`**: `2`
-- **`flex_window`**: `0.50`
+- **`flex_window`**: `0.25`
 - **`warmup_steps`**: `4`
 - **`stop_caching_step`**: `22` _(Always set this to Total Steps minus ~3)_
 
