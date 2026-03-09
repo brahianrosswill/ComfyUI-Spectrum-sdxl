@@ -13,7 +13,7 @@ This repository contains a ComfyUI custom node implementing the **Spectrum** sam
 > | ![Default](/images/default.png) | ![Spectrum](/images/spectrum.png) |
 > |            **6.5 s**            |             **3.6 s**             |
 >
-> **Anima:**
+> **Anima (30-step):**
 >
 > |                   Default                   |                   Spectrum                    |
 > | :-----------------------------------------: | :-------------------------------------------: |
