@@ -65,7 +65,7 @@ For the best balance of **extreme speed** and **high-definition sharpness** (no 
 - **`lam`**: `0.1`
 - **`window_size`**: `2`
 - **`flex_window`**: `0.25`
-- **`warmup_steps`**: `4`
+- **`warmup_steps`**: `6` _(DiT models need higher warmup steps eg 8-10)_
 - **`stop_caching_step`**: `22` _(Always set this to Total Steps minus ~3)_
 
 Adjust `flex_window` higher if you want to push speeds further, or lower if you notice structural degradation.
@@ -95,4 +95,5 @@ If you use this node in your research, please cite the original paper:
 }
 
 ```
+
 
