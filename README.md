@@ -48,7 +48,7 @@ git clone https://github.com/ruwwww/comfyui-spectrum-sdxl
 
 | Parameter               | Description                                                                                                                                                                                                                                                                                         |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`w`**                 | Blending weight between predicted and last true features. Lower values (0.4–0.5) rely more on local momentum, preserving sharpness, while higher values rely on global spectral smoothing.                                                                                                          |
+| **`w`**                 | Blending weight between predicted and last true features. Lower values (0.4–0.5) rely more on local momentum, preserving sharpness, while higher values rely on global spectral smoothing. setting `w` to 0 means using Local Taylor based approximation effectively ignoring the global smoothing parameters (`m` and `lam`).                                                                                                    |
 | **`m`**                 | Number of Chebyshev polynomial basis functions (forecast complexity). Lower values (3) are generally more stable for short SDXL runs.                                                                                                                                                               |
 | **`lam`**               | Ridge regularization strength ($\lambda$). High values (1.0) prevent latent explosion, rainbow artifacts, and black outputs in low-precision modes.                                                                                                                                                 |
 | **`window_size`**       | Initial forecasting window size (number of skipped steps).                                                                                                                                                                                                                                          |
@@ -95,6 +95,7 @@ If you use this node in your research, please cite the original paper:
 }
 
 ```
+
 
 
 
