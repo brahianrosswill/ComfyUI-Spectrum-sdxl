@@ -33,7 +33,14 @@ class CaliberatedFastChebyshevForecaster2:
 
     # TODO: Remove hardcoded t_max and 
     def _taus(self, t: float) -> float:
-        return (t / (self.t_max or 50.0)) * 2.0 - 1.0
+        total = getattr(self, 'total_steps', None) \
+            or getattr(self, 't_max', None) \
+            or getattr(self, 'estimated_total_steps', None) \
+            or 30
+
+        if total <= 0:
+            total = 30
+        return 2.0 * (t / total) - 1.0
 
     def _build_design(self, taus: torch.Tensor) -> torch.Tensor:
         taus = taus.reshape(-1, 1)
@@ -127,6 +134,7 @@ class SpectrumSDXLCalibrated:
                 "flex_window": ("FLOAT", {"default": 0.75, "min": 0.0, "max": 2.0, "step": 0.05}),
                 "warmup_steps": ("INT", {"default": 5, "min": 0, "max": 20}),
                 "stop_caching_step": ("INT", {"default": -1, "min": -1, "max": 100, "step": 1}),
+                "steps": ("INT", {"default": 30, "min": 10, "max": 500, "step": 1, "tooltip": "Temporary workaround: controls step count used for chebyshev. Match this value with your KSampler for consistent results."}),
                 "enable_calibration": ("BOOLEAN", {"default": True}),
                 "calibration_strength": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1.0, "step": 0.05}),
                 "debug": ("BOOLEAN", {"default": False}),
@@ -137,8 +145,16 @@ class SpectrumSDXLCalibrated:
     FUNCTION = "patch"
     CATEGORY = "sampling/foca"
 
-    # DITAMBAHKAN: calibration_strength di parameter patch
-    def patch(self, model, w, m, lam, window_size, flex_window, warmup_steps, stop_caching_step, enable_calibration, calibration_strength, debug):
+    def patch(self, model, w, m, lam, window_size, flex_window, warmup_steps, stop_caching_step, enable_calibration, calibration_strength, debug, steps=30):
+        self.total_steps = steps
+        if hasattr(self, 'forecaster') and self.forecaster is not None:
+            self.forecaster.t_max = steps
+            self.forecaster.estimated_total_steps = steps
+
+        state = getattr(model, 'spectrum_state', {})
+        state['total_steps'] = steps
+        model.spectrum_state = state
+
         state = {
             "forecasters": None,
             "cnt": 0,
@@ -146,7 +162,7 @@ class SpectrumSDXLCalibrated:
             "curr_ws": float(window_size),
             "last_t": -1,
             "total_runs": 0,
-            "estimated_total_steps": 50,
+            "estimated_total_steps": steps,
             "debug": bool(debug),
         }
         forecast_stream = torch.cuda.Stream() if torch.cuda.is_available() else None
@@ -180,6 +196,9 @@ class SpectrumSDXLCalibrated:
 
             if state["forecasters"] is None:
                 state["forecasters"] = [CaliberatedFastChebyshevForecaster2(m=m, lam=lam) for _ in range(batch_size)]
+                for f in state["forecasters"]:
+                    f.t_max = steps
+                    f.estimated_total_steps = steps
 
             if len(state["num_cached"]) != batch_size:
                 state["num_cached"] = [0] * batch_size
