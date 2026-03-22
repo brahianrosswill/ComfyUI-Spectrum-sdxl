@@ -1,6 +1,8 @@
-from .spectrum_node import SpectrumSDXL, SpectrumSDXLBatch
+from .src.spectrum_node import SpectrumSDXL
+from .src.calibrated_spectrum_node import SpectrumSDXLCalibrated
 
-NODE_CLASS_MAPPINGS = {"SpectrumSDXL": SpectrumSDXL, "SpectrumSDXLBatch": SpectrumSDXLBatch}
-NODE_DISPLAY_NAME_MAPPINGS = {"SpectrumSDXL": "Spectrum Adaptive Forecaster (SDXL)", "SpectrumSDXLBatch": "Spectrum Adaptive Forecaster Batch (SDXL)"}
+
+NODE_CLASS_MAPPINGS = {"SpectrumSDXL": SpectrumSDXL, "CalibratedSpectrumSDXL": SpectrumSDXLCalibrated}
+NODE_DISPLAY_NAME_MAPPINGS = {"SpectrumSDXL": "Spectrum Adaptive Forecaster (SDXL)", "CalibratedSpectrumSDXL": "Calibrated Spectrum Adaptive Forecaster (SDXL)"}
 
 __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]

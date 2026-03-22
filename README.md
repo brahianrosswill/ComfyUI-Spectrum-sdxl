@@ -1,9 +1,11 @@
 # ComfyUI Spectrum SDXL Node
 
-This repository contains a ComfyUI custom node implementing the **Spectrum** sampling acceleration technique, while initially tailored specifically for SDXL models, its confirmed to works with **Some** DiT based model such as Anima. Spectrum is a training-free method that forecasts spectral features using Chebyshev polynomials and ridge regression to skip redundant UNet computations, achieving significant speed-ups with minimal quality loss.
+This repository contains a Unnoficial ComfyUI custom node implementing the **Spectrum** sampling acceleration technique, tailored specifically for SDXL models. Spectrum is a training-free method that forecasts spectral features using Chebyshev polynomials and ridge regression to skip redundant UNet computations, achieving significant speed-ups with less quality loss.
 
-> **Disclaimer:** This repository was created with substantial assistance from AI tools.
+> **Disclaimer:** This implementation caches the outer feature rather than the inner feature approach described in the original paper. 
 
+> **New**: Calibrated Spectrum mode recovers washed-out details by applying residual correction after each real forward pass and blending it into forecasts.
+>
 > **Performance comparison** — **Download the images below and drag them into ComfyUI to instantly load optimized workflows!**
 >
 > **SDXL (24-step Euler):**
@@ -12,8 +14,15 @@ This repository contains a ComfyUI custom node implementing the **Spectrum** sam
 > | :-----------------------------: | :-------------------------------: |
 > | ![Default](/images/default.png) | ![Spectrum](/images/spectrum.png) |
 > |            **6.5 s**            |             **3.6 s**             |
+>> **SDXL Calibrated Comparisons (30-step Euler)**
 >
-> **Anima (30-step):**
+> | Normal | Spectrum | Calibrated (strength 0.5) | Calibrated (strength 0.8) |
+> | :----: | :------: | :----------------------: | :----------------------: |
+> | ![Normal](/images/no_cache1.png) | ![Spectrum](/images/spectrum1.png) | ![Cal0.5](/images/calibrated1-0.5.png) | ![Cal0.8](/images/calibrated1-0.8.png) |
+> | **6.5 s** | **3.6 s** | **3.8 s** | **3.9 s** |
+> | ![Normal2](/images/no_cache2.png) | ![Spectrum2](/images/spectrum2.png) | ![Cal0.5_2](/images/calibrated2-0.5.png) | ![Cal0.8_2](/images/calibrated2-0.8.png) |
+> | **6.6 s** | **3.7 s** | **3.9 s** | **4.0 s** |
+>> **Anima (30-step):**
 >
 > |                   Default                   |                   Spectrum                    |
 > | :-----------------------------------------: | :-------------------------------------------: |
@@ -24,7 +33,6 @@ This repository contains a ComfyUI custom node implementing the **Spectrum** sam
 
 ## Key Features
 
-- **Architecture Agnostic** – While initially tailored for SDXL, this implementation is designed to be model-agnostic. It successfully accelerates both UNet-based models (like SDXL) and **Some** Diffusion Transformer (DiT) architectures (so far tested only on Anima).
 - **Sampling Acceleration** – Reduce inference time (up to ~2× on SDXL) by skipping UNet evaluations on selected timesteps.
 - **Vectorized Batch Processing** – Fully vectorized mathematical operations process conditional and unconditional latents independently. This prevents memory contamination (rainbow artifacts) and sustains ultra-high `it/s` speeds without Python loop bottlenecks.
 - **FP8 Tensor-Core Support** – Compatible to run on NVIDIA Tensor Cores in FP8 mode, providing additional speed gains on compatible hardware. Works seamlessly alongside other optimizations.
@@ -64,7 +72,7 @@ For the best balance of **extreme speed** and **high-definition sharpness** (no 
 - **`m`**: `3`
 - **`lam`**: `0.1`
 - **`window_size`**: `2`
-- **`flex_window`**: `0.25`
+- **`flex_window`**: `0.25`  
 - **`warmup_steps`**: `6` _(DiT models need higher warmup steps eg 8-10)_
 - **`stop_caching_step`**: `22` _(Always set this to Total Steps minus ~3)_
 
