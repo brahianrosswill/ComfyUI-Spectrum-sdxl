@@ -16,7 +16,7 @@ This repository contains a Unnoficial ComfyUI custom node implementing the **Spe
 > | **8.8 s** | **4.8 s** | **4.8 s** | **4.8 s** |
 > | ![Normal2](/images/no_cache2.png) | ![Spectrum2](/images/spectrum2.png) | ![Cal0.5_2](/images/calibrated2-s-0.5.png) | ![Cal0.8_2](/images/calibrated2-s-0.8.png) |
 > | **8.3 s** | **4.6 s** | **4.6 s** | **4.6 s** |
->> **Anima (30-step):**
+>> **Anima (30-step er-sde), For anima euler sampler is often more stable than er-sde**
 >
 > |                   Default                   |                   Spectrum                    |
 > | :-----------------------------------------: | :-------------------------------------------: |
@@ -71,7 +71,7 @@ For the best balance of **extreme speed** and **high-definition sharpness** (no 
 - **`warmup_steps`**: `6` _(DiT models need higher warmup steps eg 8-10)_
 - **`stop_caching_step`**: `22` _(Always set this to Total Steps minus ~3)_
 
-Adjust `flex_window` higher if you want to push speeds further, or lower if you notice structural degradation.
+Adjust `flex_window` higher if you want to push speeds further, or lower if you notice structural degradation. 
 
 ## Credits & References
 
