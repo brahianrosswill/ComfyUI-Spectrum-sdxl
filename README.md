@@ -57,6 +57,7 @@ git clone https://github.com/ruwwww/comfyui-spectrum-sdxl
 | **`flex_window`**       | Increment added to the window after each actual UNet pass. Higher values result in aggressive acceleration.                                                                                                                                                                                         |
 | **`warmup_steps`**      | Number of initial full-model steps before forecasting begins. Gives the model time to establish composition.                                                                                                                                                                                        |
 | **`stop_caching_step`** | The exact step count where Spectrum stops accelerating and hands rendering back to the native UNet. Essential for recovering fine details. (e.g., If rendering 25 total steps, set to `22` to let the original UNet render the final 3 steps). Set to `100` to disable the guard for maximum speed. |
+| **`steps`** | Additional manual passthrough of KSampler step count into the model forecaster (`t_max` / `_taus` normalization). Set to match your KSampler total steps for stable forecast accuracy and drift reduction. |
 
 ## Recommended Settings
 
