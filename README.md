@@ -18,9 +18,9 @@ This repository contains a Unnoficial ComfyUI custom node implementing the **Spe
 >
 > | Normal | Spectrum | Calibrated (strength 0.5) | Calibrated (strength 0.8) |
 > | :----: | :------: | :----------------------: | :----------------------: |
-> | ![Normal](/images/no_cache1.png) | ![Spectrum](/images/spectrum1.png) | ![Cal0.5](/images/calibrated1-0.5.png) | ![Cal0.8](/images/calibrated1-0.8.png) |
+> | ![Normal](/images/no_cache1.png) | ![Spectrum](/images/spectrum1.png) | ![Cal0.5](/images/calibrated1-s-0.5.png) | ![Cal0.8](/images/calibrated1-s-0.8.png) |
 > | **6.5 s** | **3.6 s** | **3.8 s** | **3.9 s** |
-> | ![Normal2](/images/no_cache2.png) | ![Spectrum2](/images/spectrum2.png) | ![Cal0.5_2](/images/calibrated2-0.5.png) | ![Cal0.8_2](/images/calibrated2-0.8.png) |
+> | ![Normal2](/images/no_cache2.png) | ![Spectrum2](/images/spectrum2.png) | ![Cal0.5_2](/images/calibrated2-s-0.5.png) | ![Cal0.8_2](/images/calibrated2-s-0.8.png) |
 > | **6.6 s** | **3.7 s** | **3.9 s** | **4.0 s** |
 >> **Anima (30-step):**
 >
