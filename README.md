@@ -8,12 +8,6 @@ This repository contains a Unnoficial ComfyUI custom node implementing the **Spe
 >
 > **Performance comparison** — **Download the images below and drag them into ComfyUI to instantly load optimized workflows!**
 >
-> **SDXL (24-step Euler):**
->
-> |             Default             |             Spectrum              |
-> | :-----------------------------: | :-------------------------------: |
-> | ![Default](/images/default.png) | ![Spectrum](/images/spectrum.png) |
-> |            **6.5 s**            |             **3.6 s**             |
 >> **SDXL Calibrated Comparisons (30-step Euler)**
 >
 > | Normal | Spectrum | Calibrated (strength 0.5) | Calibrated (strength 0.8) |
