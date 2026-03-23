@@ -16,7 +16,7 @@ This repository contains a Unnoficial ComfyUI custom node implementing the **Spe
 > | **8.8 s** | **4.8 s** | **4.8 s** | **4.8 s** |
 > | ![Normal2](/images/no_cache2.png) | ![Spectrum2](/images/spectrum2.png) | ![Cal0.5_2](/images/calibrated2-s-0.5.png) | ![Cal0.8_2](/images/calibrated2-s-0.8.png) |
 > | **8.3 s** | **4.6 s** | **4.6 s** | **4.6 s** |
->> **Anima (30-step er-sde), For anima euler sampler is often more stable than er-sde**
+>> **Anima (30-step er-sde)**
 >
 > |                   Default                   |                   Spectrum                    |
 > | :-----------------------------------------: | :-------------------------------------------: |
