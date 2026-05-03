@@ -2,9 +2,11 @@
 
 This repository contains a Unnoficial ComfyUI custom node implementing the **Spectrum** sampling acceleration technique, tailored specifically for SDXL models. Spectrum is a training-free method that forecasts spectral features using Chebyshev polynomials and ridge regression to skip redundant UNet computations, achieving significant speed-ups with less quality loss.
 
-> **Disclaimer:** This implementation caches the outer feature rather than the inner feature approach described in the original paper. 
-
-> **New**: Calibrated Spectrum mode recovers washed-out details by applying residual correction after each real forward pass and blending it into forecasts.
+> **Disclaimer:** This implementation follows the official Spectrum paper logic but caches the outer feature rather than the inner feature approach. 
+>
+> **Legacy / Non-Faithful Node:** The `SpectrumSDXLCalibrated` node is now considered **legacy**. 
+> 
+> *Clarification for returning users:* The previous version of this node was essentially "vibe-coded" from scratch because I couldn't initially find the official forecaster implementation. This led to some non-principled additions like "calibration" which, while interesting, are not faithful to the paper. This has now been solved by porting the [official forecaster code](https://github.com/hanjq17/Spectrum/blob/main/src/utils/basis_utils.py) into the `SpectrumSDXL` node. Please migrate to the faithful implementation for more stable and principled results.
 >
 > **Performance comparison** — **Download the images below and drag them into ComfyUI to instantly load optimized workflows!**
 >
@@ -50,7 +52,7 @@ git clone https://github.com/ruwwww/comfyui-spectrum-sdxl
 
 | Parameter               | Description                                                                                                                                                                                                                                                                                         |
 | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`w`**                 | Blending weight between predicted and last true features. Lower values (0.4–0.5) rely more on local momentum, preserving sharpness, while higher values rely on global spectral smoothing. setting `w` to 0 means using Local Taylor based approximation effectively ignoring the global smoothing parameters (`m` and `lam`).                                                                                                    |
+| **`w`**                 | Blending weight between predicted and last true features. Lower values (0.4–0.5) rely more on local momentum (Taylor), preserving sharpness, while higher values rely on global spectral smoothing (Chebyshev). |
 | **`m`**                 | Number of Chebyshev polynomial basis functions (forecast complexity). Lower values (3) are generally more stable for short SDXL runs.                                                                                                                                                               |
 | **`lam`**               | Ridge regularization strength ($\lambda$). High values (1.0) prevent latent explosion, rainbow artifacts, and black outputs in low-precision modes.                                                                                                                                                 |
 | **`window_size`**       | Initial forecasting window size (number of skipped steps).                                                                                                                                                                                                                                          |
@@ -69,7 +71,7 @@ For the best balance of **extreme speed** and **high-definition sharpness** (no 
 - **`window_size`**: `2`
 - **`flex_window`**: `0.25`  
 - **`warmup_steps`**: `6` _(DiT models need higher warmup steps eg 8-10)_
-- **`stop_caching_step`**: `22` _(Always set this to Total Steps minus ~3)_
+- **`stop_caching_step`**: `22` _(Set this to Total Steps minus ~3)_
 
 Adjust `flex_window` higher if you want to push speeds further, or lower if you notice structural degradation. 
 

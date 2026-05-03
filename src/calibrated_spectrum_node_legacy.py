@@ -1,3 +1,7 @@
+# [LEGACY / NON-FAITHFUL IMPLEMENTATION]
+# This node is kept for backward compatibility and experimentation.
+# It uses a non-standard "calibration" logic that is not part of the official Spectrum paper.
+# Please use the 'SpectrumSDXL' node for a faithful implementation.
 
 import math
 import torch
@@ -17,7 +21,7 @@ def _tensor_debug_stats(tensor: torch.Tensor) -> str:
     )
 
 
-# ====================== Spectrum with Residual Calibration ======================
+# ====================== Spectrum with Residual Calibration (Legacy) ======================
 class CaliberatedFastChebyshevForecaster2:
     def __init__(self, m: int = 4, lam: float = 0.1):
         self.M = m
@@ -126,24 +130,24 @@ class SpectrumSDXLCalibrated:
     def INPUT_TYPES(s):
         return {
             "required": {
-                "model": ("MODEL",),
-                "w": ("FLOAT", {"default": 0.60, "min": 0.0, "max": 1.0, "step": 0.05}),
-                "m": ("INT", {"default": 4, "min": 1, "max": 8}),
-                "lam": ("FLOAT", {"default": 0.1, "min": 0.0, "max": 2.0, "step": 0.05}),
-                "window_size": ("INT", {"default": 3, "min": 1, "max": 10}),
-                "flex_window": ("FLOAT", {"default": 0.75, "min": 0.0, "max": 2.0, "step": 0.05}),
-                "warmup_steps": ("INT", {"default": 5, "min": 0, "max": 20}),
-                "stop_caching_step": ("INT", {"default": -1, "min": -1, "max": 100, "step": 1}),
-                "steps": ("INT", {"default": 30, "min": 10, "max": 500, "step": 1, "tooltip": "Temporary workaround: controls step count used for chebyshev. Match this value with your KSampler for consistent results."}),
-                "enable_calibration": ("BOOLEAN", {"default": True}),
-                "calibration_strength": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1.0, "step": 0.05}),
-                "debug": ("BOOLEAN", {"default": False}),
+                "model": ("MODEL", {"tooltip": "LEGACY: This node is non-faithful and uses 'vibe-coded' logic. Please use the 'SpectrumSDXL' if you want a faithful implementation."}),
+                "w": ("FLOAT", {"default": 0.3, "min": 0.0, "max": 1.0, "step": 0.05, "tooltip": "Blending weight between predicted (Chebyshev) and local (Taylor) features. Lower (0.3-0.5) preserves sharpness, higher relies on global smoothing."}),
+                "m": ("INT", {"default": 3, "min": 1, "max": 8, "tooltip": "Number of Chebyshev basis functions (forecast complexity). Lower values (3-4) are more stable for SDXL."}),
+                "lam": ("FLOAT", {"default": 0.1, "min": 0.0, "max": 2.0, "step": 0.05, "tooltip": "Ridge regularization strength. Prevents latent explosions and rainbow artifacts in low-precision modes."}),
+                "window_size": ("INT", {"default": 2, "min": 1, "max": 10, "tooltip": "Initial forecasting window size (number of skipped steps)."}),
+                "flex_window": ("FLOAT", {"default": 0.0, "min": 0.0, "max": 2.0, "step": 0.05, "tooltip": "Increment added to window size after each actual UNet pass. Higher = aggressive acceleration."}),
+                "warmup_steps": ("INT", {"default": 5, "min": 0, "max": 20, "tooltip": "Initial full-model steps before forecasting begins. Gives the model time to establish composition."}),
+                "stop_caching_step": ("INT", {"default": -1, "min": -1, "max": 100, "step": 1, "tooltip": "The exact step where Spectrum stops and returns to native UNet. Essential for final detail recovery. Set to Total Steps - 3."}),
+                "steps": ("INT", {"default": 30, "min": 10, "max": 500, "step": 1, "tooltip": "Match this value with your KSampler total steps for stable forecast accuracy and drift reduction."}),
+                "enable_calibration": ("BOOLEAN", {"default": True, "tooltip": "LEGACY: Applies residual correction to forecasts. Not part of the official algorithm."}),
+                "calibration_strength": ("FLOAT", {"default": 0.5, "min": 0.0, "max": 1.0, "step": 0.05, "tooltip": "LEGACY: Strength of the residual blending."}),
+                "debug": ("BOOLEAN", {"default": False, "tooltip": "Print detailed stats to the console for debugging."}),
             }
         }
 
     RETURN_TYPES = ("MODEL",)
     FUNCTION = "patch"
-    CATEGORY = "sampling/foca"
+    CATEGORY = "sampling"
 
     def patch(self, model, w, m, lam, window_size, flex_window, warmup_steps, stop_caching_step, enable_calibration, calibration_strength, debug, steps=30):
         self.total_steps = steps
